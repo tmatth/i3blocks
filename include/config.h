@@ -21,6 +21,6 @@
 
 #include "bar.h"
 
-struct bar *config_load(const char *);
+int config_load(const char *path, struct bar *bar);
 
 #endif /* _CONFIG_H */

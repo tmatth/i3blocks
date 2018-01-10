@@ -18,6 +18,7 @@
 
 #include <getopt.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "config.h"
 #include "log.h"
@@ -41,14 +42,15 @@ start(void)
 int
 main(int argc, char *argv[])
 {
-	char *inifile = NULL;
+	char *path = NULL;
 	struct bar *bar;
+	int err;
 	int c;
 
 	while (c = getopt(argc, argv, "c:vhV"), c != -1) {
 		switch (c) {
 		case 'c':
-			inifile = optarg;
+			path = optarg;
 			break;
 		case 'v':
 			log_level++;
@@ -67,8 +69,12 @@ main(int argc, char *argv[])
 
 	debug("log level %u", log_level);
 
-	bar = config_load(inifile);
-	if (!bar) {
+	bar = calloc(1, sizeof(struct bar));
+	if (!bar)
+		return 1;
+
+	err = config_load(path, bar);
+	if (err) {
 		error("Try '%s -h' for more information.", argv[0]);
 		return 1;
 	}
