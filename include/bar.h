@@ -19,12 +19,19 @@
 #ifndef _BAR_H
 #define _BAR_H
 
+#include <stdbool.h>
+
 struct bar {
 	struct block *blocks;
 	unsigned int num;
+	bool frozen;
 };
 
+struct bar *bar_create(void);
+void bar_destroy(struct bar *bar);
 void bar_load(struct bar *bar, const char *path);
+void bar_schedule(struct bar *bar);
+void bar_dump(struct bar *bar);
 void bar_poll_timed(struct bar *);
 void bar_poll_clicked(struct bar *);
 void bar_poll_outdated(struct bar *);
